@@ -1,5 +1,6 @@
 import 'package:cliniq_core/views/auth/auth_controller.dart';
 import 'package:cliniq_core/views/auth/login_screen.dart';
+import 'package:cliniq_core/views/dashboards/admin_homescreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // Set LoginScreen as the starting screen
-      home: const LoginScreen(),
+      home: const AdminHomescreen(),
     );
   }
 }
