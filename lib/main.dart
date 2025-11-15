@@ -1,3 +1,4 @@
+import 'package:cliniq_core/controllers/equipement_controller.dart';
 import 'package:cliniq_core/views/auth/auth_controller.dart';
 import 'package:cliniq_core/views/auth/login_screen.dart';
 import 'package:cliniq_core/views/dashboards/admin_homescreen.dart';
@@ -5,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'firebase_options.dart';
+import 'controllers/room_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,7 +14,8 @@ void main() async {
 
   // Inject AuthController globally
   Get.put(AuthController());
-
+  Get.put(RoomController());
+  Get.put(EquipementController());
   runApp(const MyApp());
 }
 
