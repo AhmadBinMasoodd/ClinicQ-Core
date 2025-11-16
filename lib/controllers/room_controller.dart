@@ -39,6 +39,7 @@ class RoomController extends GetxController{
     }
 
   }
+
   void removeRoom(Room room) async {
     final index = rooms.indexWhere((r) => r.roomId == room.roomId);
     if (index != -1) {

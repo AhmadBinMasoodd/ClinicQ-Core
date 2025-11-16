@@ -1,7 +1,7 @@
-class History{
+class History {
   final String oldLocation;
   final String newLocation;
-  final String dateTime;
+  final DateTime dateTime; // Change from String to DateTime
   final String movedBy;
 
   History({
@@ -15,7 +15,7 @@ class History{
     return {
       "oldLocation": oldLocation,
       "newLocation": newLocation,
-      "dateTime": dateTime,
+      "dateTime": dateTime.toIso8601String(), // store as string
       "movedBy": movedBy,
     };
   }
@@ -24,7 +24,7 @@ class History{
     return History(
       oldLocation: json["oldLocation"],
       newLocation: json["newLocation"],
-      dateTime: json["dateTime"],
+      dateTime: DateTime.parse(json["dateTime"]), // parse back to DateTime
       movedBy: json["movedBy"],
     );
   }

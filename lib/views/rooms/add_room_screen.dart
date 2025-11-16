@@ -1,6 +1,8 @@
 
 import 'package:cliniq_core/controllers/room_controller.dart';
 import 'package:cliniq_core/models/room_model.dart';
+import 'package:cliniq_core/views/widgets/custom_field.dart';
+import 'package:cliniq_core/views/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
@@ -50,8 +52,10 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
       middleText: "Room has been added!",
       textConfirm: "OK",
       onConfirm: () {
-        Get.back(); // close dialog
-        Get.back(); // go back to RoomsScreen
+        roomTypeController.clear();
+        roomNumberController.clear();
+        notesController.clear();
+        Get.back(); // close dialoge// go back to RoomsScreen
         Get.snackbar(
           "Success",
           "Room added successfully",
@@ -65,31 +69,78 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Add Room")),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      appBar: AppBar(title: Text("Add Room"),centerTitle: true,),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              controller: roomNumberController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: "Room Number"),
+
+            const Text(
+              "Register New Room",
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            SizedBox(height: 10),
-            TextField(
-              controller: roomTypeController,
-              decoration: InputDecoration(labelText: "Room Type"),
+
+            const SizedBox(height: 10),
+
+            const Text(
+              "Fill the details below to add room.",
+              style: TextStyle(fontSize: 15, color: Colors.grey),
             ),
-            SizedBox(height: 10),
-            TextField(
-              controller: notesController,
-              decoration: InputDecoration(labelText: "Notes (Optional)"),
+
+            const SizedBox(height: 25),
+
+            Container(
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: Colors.white24,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 10,
+                    spreadRadius: 1,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+
+                  CustomTextField(
+                    controller: roomNumberController,
+                    label: "Room Number",
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  CustomTextField(
+                    controller: roomTypeController,
+                    label: "Type (ICU / Emergency)",
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  CustomTextField(
+                    controller: notesController,
+                    label: "Notes",
+                  ),
+
+                ],
+              ),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: saveRoom,
-              child: Text("Add Room"),
-            ),
+
+            const SizedBox(height: 25),
+
+            RoundedButton(
+              text: "Save Room",
+              ontap: () {
+                saveRoom();
+              },
+            )
           ],
         ),
       ),

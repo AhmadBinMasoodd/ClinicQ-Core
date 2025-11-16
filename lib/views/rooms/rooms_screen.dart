@@ -11,7 +11,11 @@ class RoomsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Rooms"), centerTitle: true),
+      appBar: AppBar(
+        title: Text("Rooms"),
+        centerTitle: true,
+        backgroundColor: Colors.teal,
+      ),
       body: Obx(() {
         final rooms = roomController.rooms;
         if (rooms.isEmpty) {
@@ -24,63 +28,100 @@ class RoomsScreen extends StatelessWidget {
         }
 
         return ListView.separated(
+          padding: EdgeInsets.all(10),
           itemCount: rooms.length,
-          separatorBuilder: (_, __) => Divider(height: 1),
+          separatorBuilder: (_, __) => SizedBox(height: 8),
           itemBuilder: (context, index) {
             final room = rooms[index];
 
             return Card(
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              child: Column(
-                children: [
-                  ListTile(
-                    title: Text("Room ${room.roomNumber} - ${room.roomType}"),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            // delete room
-                            roomController.removeRoom(room);
-                          },
-                          icon: Icon(Icons.delete, color: Colors.red),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: Icon(
+                        Icons.meeting_room,
+                        color: Colors.teal,
+                        size: 36,
+                      ),
+                      title: Text(
+                        "Room ${room.roomNumber}",
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      subtitle: Container(
+                        margin: EdgeInsets.only(top: 4),
+                        padding:
+                        EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.teal.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        IconButton(
-                          icon: Obx(
-                                () => AnimatedRotation(
-                              turns: room.isExpanded.value ? 0.5 : 0.0,
-                              duration: Duration(milliseconds: 300),
-                              child: Icon(
-                                Icons.expand_more,
-                                color: Theme.of(context).primaryColor,
+                        child: Text(
+                          room.roomType,
+                          style: TextStyle(color: Colors.teal[800]),
+                        ),
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Expand button
+                          IconButton(
+                            icon: Obx(
+                                  () => AnimatedRotation(
+                                turns: room.isExpanded.value ? 0.5 : 0.0,
+                                duration: Duration(milliseconds: 300),
+                                child: Icon(
+                                  Icons.expand_more,
+                                  color: Colors.teal,
+                                ),
                               ),
                             ),
+                            onPressed: () {
+                              room.isExpanded.value = !room.isExpanded.value;
+                            },
                           ),
-                          onPressed: () {
-                            room.isExpanded.value = !room.isExpanded.value;
-                          },
-                        ),
-                      ],
+                          // Delete button
+                          IconButton(
+                            onPressed: () {
+                              roomController.removeRoom(room);
+                            },
+                            icon: Icon(Icons.delete, color: Colors.red),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Obx(
-                        () => AnimatedSize(
-                      duration: Duration(milliseconds: 300),
-                      child: room.isExpanded.value
-                          ? Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        child: Text(
-                          room.notes.isEmpty
-                              ? "No notes available"
-                              : room.notes,
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
-                      )
-                          : SizedBox.shrink(),
+                    Obx(
+                          () => AnimatedSize(
+                        duration: Duration(milliseconds: 300),
+                        child: room.isExpanded.value
+                            ? Container(
+                          width: double.infinity,
+                          margin: EdgeInsets.only(top: 8),
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            room.notes.isEmpty
+                                ? "No notes available"
+                                : room.notes,
+                            style: TextStyle(
+                              color: Colors.grey[700],
+                              fontSize: 14,
+                            ),
+                          ),
+                        )
+                            : SizedBox.shrink(),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },
@@ -95,3 +136,4 @@ class RoomsScreen extends StatelessWidget {
     );
   }
 }
+
